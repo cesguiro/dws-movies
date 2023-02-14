@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MovieRequest;
 use App\Models\Director;
 use App\Models\Movie;
+use Ciri\dto\MovieDto;
 use Ciri\service\impl\MovieServiceImpl;
 use Ciri\service\MovieService;
 use Illuminate\Http\Request;
@@ -25,18 +26,34 @@ class MovieController extends Controller
         return response()->json($movies, 200);
     }
 
-    public function show(Movie $movie){
+    /*public function show(Movie $movie){
+        return response()->json($movie, 200);
+    }*/
+
+    public function show(int $id){
+        $movie = $this->movieService->findById($id);
         return response()->json($movie, 200);
     }
 
-    public function store(MovieRequest $movieRequest){
+    /*public function store(MovieRequest $movieRequest){
         $movie = new Movie();
         $movie->title = $movieRequest->title;
         $movie->year = $movieRequest->year;
         $movie->duration = $movieRequest->duration;
         $movie->director()->associate(Director::findOrFail($movieRequest->director_id));
         $movie->save();
-        return response()->json($movie, 200);
+        return response()->json($movie, 201);
+    }*/
+
+    public function store(MovieRequest $movieRequest){
+        $movieDto = new MovieDto(
+            null, 
+            $movieRequest->title,
+            $movieRequest->year,
+            $movieRequest->duration,
+            $movieRequest->director_id
+        );
+        return response()->json($this->movieService->save($movieDto), 201);
     }
 
     public function destroy(Movie $movie){

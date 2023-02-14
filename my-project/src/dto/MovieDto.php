@@ -4,7 +4,7 @@ namespace Ciri\dto;
 
 class MovieDto implements \JsonSerializable{
 
-    private int $id;
+    private ?int $id;
     private string $title;
     private int $year;
     private int $duration;
@@ -20,7 +20,7 @@ class MovieDto implements \JsonSerializable{
      * @param int $duration
      * @param int $director_id
      */
-    public function __construct(int $id, string $title, int $year, int $duration, int $director_id) {
+    public function __construct(?int $id, string $title, int $year, int $duration, int $director_id) {
         $this->id = $id;
     	$this->title = $title;
     	$this->year = $year;

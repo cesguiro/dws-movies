@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+  mariadb:
+    image: mariadb:10.7.1
+    ports:
+      - '3307:3306'
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      # - ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=laravel
+      - MYSQL_PASSWORD=laravel
+      - MYSQL_DATABASE=movies
+  myapp:
+    image: docker.io/bitnami/laravel:9
+    ports:
+      - '8000:8000'
+    environment:
+      - DB_HOST=192.168.16.2 #192.168.16.2
+      - DB_PORT=3306
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - DB_DATABASE=movies
+    volumes:
+      - './my-project:/app'
+    depends_on:
+      - mariadb
